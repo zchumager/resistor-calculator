@@ -1,0 +1,71 @@
+body{
+	background: azure;
+	font-family: helvetica;
+	font-size:14px;
+}
+section#container{
+	height: 275px;
+	margin: 70px auto;
+	padding-top:10px;
+	width: 98%;
+}
+div.wire{
+	background: gray;
+	height: 9px;
+	margin-top: 80px;
+	width: 7.5%;
+}
+div#resistor-body{
+	/*permalink: http://www.colorzilla.com/gradient-editor/#f2eda4+2,917511+50,776201+51,bfb24e+100;Custom*/
+	background: -moz-linear-gradient(top, #f2eda4 2%, #917511 50%, #776201 51%, #bfb24e 100%); /* FF3.6+ */
+	border-radius:1.5em;
+	height:140px;
+	margin:8px auto;
+	width: 85%;
+}
+div#number-bands-panel{
+	margin: 0 auto;
+	width: 90%;
+}
+div.color-selector-panel, div.band{
+	display: inline-block;
+	margin-left: 6%;
+}
+div.color-selector-panel{
+	margin-top: 30px;
+}
+div.band{
+	border:solid 1px;
+	height: 138.5px;
+}
+div#band-three{
+	width: 28px;
+}
+div#two-last-band-container{
+	display: inline-block;
+	float:right;
+	height: 124px;
+	width:29%
+}
+button#btn-calculate{
+	border-radius: 1em;
+	font-size: 40px;
+	height: 57px;
+	margin-top: 10px;
+	width: 100%;
+}
+div#results-panel{
+	margin-top: 7px;
+	padding: 0;
+	width: 100%;
+}
+
+@media screen and (min-width: 480px){
+	section#container{
+		margin-top: 0;
+	}
+	div#radio-buttons-container{
+		margin: 0 auto;
+		width:60%;
+	}
+}

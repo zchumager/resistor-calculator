@@ -1,0 +1,17 @@
+{
+  "name": "Resistor Calculator",
+  "description": "Calculate the resistance in a resistor",
+  "launch_path": "/index.html",
+  "icons": {
+	"32": "/img/Resistor-32.png",
+	"48": "/img/Resistor-48.png",
+	"64": "/img/Resistor-64.png",
+	"128": "/img/Resistor-128.png",
+	"256": "/img/Resistor-256.png"
+  },
+  "developer": {
+    "name": "Pedro Arnoldo Machado Durán",
+    "url": "http://geekalt42.net"
+  },
+  "default_locale": "es"
+}

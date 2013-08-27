@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="laktek-really-simple-color-picker/colorPicker.css" type="text/css" />
+		<script src="jquery-1.10.2.js"></script>
+		<script language="javascript" type="text/javascript" src="laktek-really-simple-color-picker/jquery.colorPicker.js"/></script>
+		<script src="main.js"></script>
+		<title>Resistor Calculator</title>
+	</head>
+	<body>
+		<section id="container">	
+			<div id="number-bands-panel">
+				<fieldset>
+				<div id="radio-buttons-container">
+					<input type="radio" id="four-bands" name="bands" value="4" checked />4 Bands
+					<input type="radio" id="five-bands" name="bands" value="5" />5 Bands 
+					<input type="radio" id="six-bands" name="bands" value="6" />6 Bands
+				</div>
+				</fieldset>
+			</div>
+			<div class="wire" style="float:left"></div><div class="wire" style="float:right"></div>
+			<div id="resistor-body">
+				<div id="bands-panel">
+					<div class="band" style= "float:left">
+						<div class="color-selector-panel">
+							<input type="text" id="digit1" name="digit1" digit=""/>
+						</div>
+					</div>
+					<div class="band">
+						<div class="color-selector-panel">
+							<input type="text" id="digit2" name="digit2" digit=""/>
+						</div>
+					</div>
+					<div class="band" id="band-three">
+						<div class="color-selector-panel">
+							<input type="text" id="digit3" name="digit3" digit=""/>
+						</div>
+					</div>
+					<div class="band">
+						<div class="color-selector-panel">
+							<input type="text" id="multiplier" name="multiplier" multiplier=""/>
+						</div>
+					</div>
+					<div id="two-last-band-container">
+						<div class="band">
+							<div class="color-selector-panel">
+								<input type="text" id="tolerance" name="tolerance" tolerance=""/>
+							</div>
+						</div>
+						<div id="temperature-band" class="band">
+							<div class="color-selector-panel">
+								<input type="text" id="temperature-coeficient" name="temperature-coeficient" temperature-coeficient=""/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button id="btn-calculate" disabled>Calculate</button>
+	</body>
+</html>
+<!--
+	REFERENCES
+		http://es.wikipedia.org/wiki/Resistor
+		http://www.williamson-labs.com/resistors.htm
+		http://www.laktek.com/2008/10/27/really-simple-color-picker-in-jquery/
+		http://www.iconspedia.com/icon/resistor-icon-45861.html
+-->
