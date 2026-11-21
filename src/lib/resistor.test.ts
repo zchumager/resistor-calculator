@@ -101,6 +101,12 @@ describe('formatting', () => {
     [1_000_000, '1 MΩ'],
     [2.2e7, '22 MΩ'],
     [1e10, '10 GΩ'],
+    [9.99e11, '999 GΩ'], // largest band value: white-white-white ×10⁹
+    [0.01, '0.01 Ω'], // smallest non-zero band value
+    // Rounding to 3 significant figures can carry into the next prefix.
+    [999.5, '1 kΩ'],
+    [999_500, '1 MΩ'],
+    [999_950, '1 MΩ'],
   ])('formatOhms(%s) = %s', (ohms, text) => {
     expect(formatOhms(ohms)).toBe(text)
   })

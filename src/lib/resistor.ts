@@ -157,15 +157,17 @@ const PREFIXES = [
 
 /** 4700 → "4.7 kΩ", 0.47 → "0.47 Ω". */
 export function formatOhms(ohms: number): string {
+  // Round before choosing the prefix, so 999.5 becomes "1 kΩ", not "1000 Ω".
+  const rounded = round3(ohms)
   for (const { factor, prefix } of PREFIXES) {
-    if (ohms >= factor) return `${trim(ohms / factor)} ${prefix}${OHM}`
+    if (rounded >= factor) return `${round3(rounded / factor)} ${prefix}${OHM}`
   }
-  return `${trim(ohms)} ${OHM}`
+  return `${rounded} ${OHM}`
 }
 
 /** At most 3 significant figures come from the bands, so this drops only float noise. */
-function trim(value: number): string {
-  return String(Number(value.toPrecision(3)))
+function round3(value: number): number {
+  return Number(value.toPrecision(3))
 }
 
 export function formatTolerance(percent: number): string {

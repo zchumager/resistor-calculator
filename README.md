@@ -21,13 +21,13 @@ appears as soon as every band is set: `4.7 kΩ ±5%`.
    **Options → Keep in Dock**). It works without an internet connection.
 
 When a new version is published, the app shows **A new version is available** with a
-**Reload** button.
+**Reload** button the next time you open it.
 
 To uninstall: open the app, then **⋮ → Uninstall Resistor Calculator**.
 
 ## Development
 
-Requires Node.js 22 or newer (`.nvmrc` pins the version used here).
+Requires Node.js 22.22.2+, 24.15+ or 26+ (`.nvmrc` pins the version used here).
 
 | Task | Command |
 |---|---|
