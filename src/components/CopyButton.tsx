@@ -23,8 +23,14 @@ export function CopyButton({ text }: { text: string }) {
   }
 
   return (
-    <button type="button" className="copy" onClick={copy} aria-label={`Copy ${text}`} data-status={status}>
-      {LABELS[status]}
-    </button>
+    <>
+      <button type="button" className="copy" onClick={copy} data-status={status}>
+        {LABELS[status]}
+      </button>
+      {/* Always mounted, so screen readers announce the change. */}
+      <span className="visually-hidden" role="status">
+        {status === 'copied' ? `Copied ${text}` : status === 'failed' ? 'Copy failed' : ''}
+      </span>
+    </>
   )
 }

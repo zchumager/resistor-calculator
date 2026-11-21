@@ -26,9 +26,9 @@ describe('UpdatePrompt', () => {
     vi.clearAllMocks()
   })
 
-  it('shows nothing normally', () => {
-    const { container } = render(<UpdatePrompt />)
-    expect(container).toBeEmptyDOMElement()
+  it('shows nothing normally, but keeps its status region mounted', () => {
+    render(<UpdatePrompt />)
+    expect(screen.getByRole('status')).toBeEmptyDOMElement()
   })
 
   it('offers to reload when a new version is waiting', async () => {

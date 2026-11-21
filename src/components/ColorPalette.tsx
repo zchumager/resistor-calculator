@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import {
   colorsFor,
   formatTempco,
@@ -34,11 +35,30 @@ function meaning(role: BandRole, color: BandColor): string {
 }
 
 export function ColorPalette({ bandIndex, role, value, onPick }: Props) {
+  const group = useRef<HTMLDivElement>(null)
+  // Set when a swatch is picked. A pick moves on to the next band, whose palette may not
+  // include the swatch that had focus; without this, keyboard focus would fall back to <body>.
+  const refocus = useRef(false)
+
+  useLayoutEffect(() => {
+    if (!refocus.current) return
+    refocus.current = false
+    const target =
+      group.current?.querySelector<HTMLButtonElement>('[aria-pressed="true"]') ??
+      group.current?.querySelector<HTMLButtonElement>('button')
+    target?.focus()
+  }, [bandIndex])
+
+  const pick = (color: ColorName) => {
+    refocus.current = true
+    onPick(color)
+  }
+
   const heading = `Band ${bandIndex + 1}: ${ROLE_LABELS[role]}`
   return (
-    <section className="palette" aria-labelledby="palette-heading">
+    <section className="palette">
       <h2 id="palette-heading">{heading}</h2>
-      <div className="swatches" role="group" aria-labelledby="palette-heading">
+      <div className="swatches" role="group" aria-labelledby="palette-heading" ref={group}>
         {colorsFor(role).map((color) => {
           const text = meaning(role, color)
           return (
@@ -48,7 +68,7 @@ export function ColorPalette({ bandIndex, role, value, onPick }: Props) {
               className="swatch"
               aria-label={`${color.label}, ${text}`}
               aria-pressed={color.name === value}
-              onClick={() => onPick(color.name)}
+              onClick={() => pick(color.name)}
             >
               <span className="chip" style={{ background: color.hex }} aria-hidden="true" />
               <span className="swatch-name">{color.label}</span>

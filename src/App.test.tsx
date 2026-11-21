@@ -67,9 +67,10 @@ describe('App', () => {
     render(<App />)
 
     for (const color of ['Yellow', 'Violet', 'Red', 'Gold']) await pickColor(user, color)
-    await user.click(screen.getByRole('button', { name: 'Copy 4.7 kΩ ±5%' }))
+    await user.click(screen.getByRole('button', { name: 'Copy' }))
     expect(await navigator.clipboard.readText()).toBe('4.7 kΩ ±5%')
-    expect(screen.getByRole('button', { name: 'Copy 4.7 kΩ ±5%' })).toHaveTextContent('Copied')
+    expect(screen.getByRole('button', { name: 'Copied' })).toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('Copied 4.7 kΩ ±5%')
   })
 
   it('says so when copying fails', async () => {
@@ -78,8 +79,42 @@ describe('App', () => {
     render(<App />)
 
     for (const color of ['Yellow', 'Violet', 'Red', 'Gold']) await pickColor(user, color)
-    await user.click(screen.getByRole('button', { name: /^Copy / }))
-    expect(screen.getByRole('button', { name: /^Copy / })).toHaveTextContent('Copy failed')
+    await user.click(screen.getByRole('button', { name: 'Copy' }))
+    expect(screen.getByRole('button', { name: 'Copy failed' })).toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('Copy failed')
+  })
+
+  it('keeps keyboard focus in the palette when the picked color is not offered for the next band', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    await user.click(screen.getByRole('button', { name: /^Band 3, multiplier/ }))
+    palette().getByRole('button', { name: /^Black,/ }).focus()
+    await user.keyboard('{Enter}') // black isn't a tolerance color, so its button goes away
+
+    expect(screen.getByRole('heading', { name: 'Band 4: Tolerance' })).toBeInTheDocument()
+    expect(palette().getByRole('button', { name: /^Brown,/ })).toHaveFocus() // first swatch
+  })
+
+  it('moves focus to the chosen color when the next band already has one', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    for (const color of ['Yellow', 'Violet', 'Red', 'Gold']) await pickColor(user, color)
+    await user.click(screen.getByRole('button', { name: /^Band 3, multiplier/ }))
+    palette().getByRole('button', { name: /^Black,/ }).focus()
+    await user.keyboard('{Enter}')
+
+    expect(palette().getByRole('button', { name: /^Gold,/ })).toHaveFocus()
+  })
+
+  it('leaves focus on a resistor band when the user selects it', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    const band = screen.getByRole('button', { name: /^Band 2, digit/ })
+    await user.click(band)
+    expect(band).toHaveFocus()
   })
 
   it('remembers the last band count and colors', async () => {
