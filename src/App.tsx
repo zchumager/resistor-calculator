@@ -1,12 +1,14 @@
-import { useReducer } from 'react'
+import { useEffect, useReducer } from 'react'
 import { BandCountSelector } from './components/BandCountSelector'
 import { ColorPalette } from './components/ColorPalette'
 import { Resistor } from './components/Resistor'
 import { Result } from './components/Result'
-import { bandsOf, INITIAL_STATE, reducer, resultOf } from './state'
+import { bandsOf, reducer, resultOf } from './state'
+import { loadState, saveState } from './storage'
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const [state, dispatch] = useReducer(reducer, undefined, loadState)
+  useEffect(() => saveState(state), [state])
   const bands = bandsOf(state)
   const selected = bands[state.selected]
 

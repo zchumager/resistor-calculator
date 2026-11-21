@@ -1,7 +1,12 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
+import { STORAGE_KEY } from './storage'
+
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 const palette = () => within(screen.getByRole('group', { name: /^Band \d/ }))
 const pickColor = (user: ReturnType<typeof userEvent.setup>, name: string) =>
@@ -55,6 +60,44 @@ describe('App', () => {
     for (const color of ['Red', 'Red', 'Orange']) await pickColor(user, color)
     expect(screen.getByText('22 kΩ')).toBeInTheDocument()
     expect(screen.getByText('±20% tolerance')).toBeInTheDocument()
+  })
+
+  it('copies the result to the clipboard', async () => {
+    const user = userEvent.setup() // installs a clipboard stub
+    render(<App />)
+
+    for (const color of ['Yellow', 'Violet', 'Red', 'Gold']) await pickColor(user, color)
+    await user.click(screen.getByRole('button', { name: 'Copy 4.7 kΩ ±5%' }))
+    expect(await navigator.clipboard.readText()).toBe('4.7 kΩ ±5%')
+    expect(screen.getByRole('button', { name: 'Copy 4.7 kΩ ±5%' })).toHaveTextContent('Copied')
+  })
+
+  it('says so when copying fails', async () => {
+    const user = userEvent.setup()
+    vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValueOnce(new Error('denied'))
+    render(<App />)
+
+    for (const color of ['Yellow', 'Violet', 'Red', 'Gold']) await pickColor(user, color)
+    await user.click(screen.getByRole('button', { name: /^Copy / }))
+    expect(screen.getByRole('button', { name: /^Copy / })).toHaveTextContent('Copy failed')
+  })
+
+  it('remembers the last band count and colors', async () => {
+    const user = userEvent.setup()
+    const { unmount } = render(<App />)
+    await user.click(screen.getByRole('button', { name: '5 bands' }))
+    for (const color of ['Brown', 'Black', 'Green', 'Brown', 'Brown']) await pickColor(user, color)
+    unmount()
+
+    render(<App />)
+    expect(screen.getByRole('button', { name: '5 bands' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText('1.05 kΩ')).toBeInTheDocument()
+  })
+
+  it('starts empty when the saved data is corrupt', () => {
+    localStorage.setItem(STORAGE_KEY, '{not json')
+    render(<App />)
+    expect(screen.getByText('Pick a color for bands 1, 2, 3, 4')).toBeInTheDocument()
   })
 
   it('clears all bands', async () => {

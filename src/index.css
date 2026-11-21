@@ -185,7 +185,7 @@ header h1 {
 
 /* Result */
 .result {
-  min-height: 92px;
+  min-height: 136px;
   padding: 16px;
   text-align: center;
   background: var(--surface);
@@ -209,7 +209,7 @@ header h1 {
 }
 
 .result .hint {
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 /* Palette */
@@ -256,6 +256,22 @@ header h1 {
 
 .swatch-meaning {
   font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.copy {
+  margin-top: 10px;
+  min-width: 96px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.copy[data-status='failed'] {
+  border-color: var(--muted);
   color: var(--muted);
 }
 
